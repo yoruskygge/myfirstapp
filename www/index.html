@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <title>quiz</title>
+    </head>
+    <body style="background-color:black;">
+    <br>
+    <br>
+    <br>
+    <br><br>
+        <div id="startContainer" style="text-align: center">
+    <font color="blue">    
+  <h1><b>Educational Multiple Choice </b></h1><br></font>
+    <button id="start" class="blink"> Start </button>
+  </div>
+
+  <div id="questionsContainer" >
+    <h1 id="question"></h1>
+  
+  <form>
+        <input type="radio" name="answer" value="0" id="ans0"> <span id="choice0"></span> </input><br>
+               
+        <input type="radio" name="answer" value="1" id="ans1"> <span id="choice1"></span> </input><br>
+                
+        <input type="radio" name="answer" value="2" id="ans2"> <span id="choice2"></span> </input><br>
+    
+    <br>
+    <br>
+    <input type="button" name="next" value="Next Question" id="next" />
+ <p>
+SCORE: <span id="userScore"></span></p>
+ <p>
+LIFE: <span id="life"></span></p>
+    </form>
+</div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script src="js/jquery.js"></script>
+<script>
+        $(document).ready(function(){
+   //hide form first
+   $('#questionsContainer').hide();
+});
+//show form when start button is clicked
+$('#start').click(function(){
+  $('#startContainer').hide();
+  $('#questionsContainer').show();
+});
+
+// Create an array to store all questions.
+var allQuestions = [];
+// Store each question in an object.
+allQuestions[0] = {
+    question: "Dominat: Manchester United are the dominant team in British football.",
+    choices: ["oldest", "youngest", "strongest"],
+    correctAnswer: 2
+};
+allQuestions[1] = {
+    question: "Display: Shops display their best productss in the window.",
+    choices: ["Show", "Sell", "Buy"],
+    correctAnswer: 0
+};
+allQuestions[2] = {
+    question: "Decade: She's been working here for decade.",
+    choices: ["1 year", "10 years", "1 month"],
+    correctAnswer: 1
+};
+allQuestions[3] = {
+    question: "Numerous: We've talked about this issue numerous times.?",
+    choices: ["some", "a few", "many"],
+    correctAnswer: 2
+};
+allQuestions[4] = {
+    question: "Concept: The concept of freedom is important to American culture.",
+    choices: ["principle", "place", "price"],
+    correctAnswer: 0
+};
+allQuestions[5] = {
+    question: "Era: The election of the new President markedd a new era in US politics.",
+    choices: ["choice", "age", "plan"],
+    correctAnswer: 1
+};
+allQuestions[6] = {
+    question: "Pursue: If you try to run away, we will pursue you.",
+    choices: ["stop", "let", "follow"],
+    correctAnswer: 2
+};
+allQuestions[7] = {
+    question: "Pioneer: Bill Gates was a pioneer of home computer software.",
+    choices: ["founder", "lawyer", "designer"],
+    correctAnswer: 0
+};
+allQuestions[8] = {
+    question: "Eventually: They eventually found the museum.",
+    choices: ["in the end", "very quickly", "all of a sudden"],
+    correctAnswer: 0
+};
+allQuestions[9] = {
+    question: "Orator: Good leaders are usually good orators.",
+    choices: ["fighters", "speakers", "thinkers"],
+    correctAnswer: 1
+};
+
+// Create a variable to store the user's score
+var userScore = 0;
+
+// Create a variable to store the index of the current question
+var questionNum = 0;
+
+// Create a variable for life
+var life = 3;
+
+// Display first question
+document.getElementById("question").textContent = allQuestions[0].question;
+
+document.getElementById("choice0").textContent = allQuestions[0].choices[0];
+
+document.getElementById("choice1").textContent = allQuestions[0].choices[1];
+
+document.getElementById("choice2").textContent = allQuestions[0].choices[2];
+
+document.getElementById("userScore").textContent = userScore;
+document.getElementById("life").textContent = life;
+
+// When the NEXT button is clicked, the user's score is updated, the current question is hidden, and the next question is revealed.
+  $("#next").click(function() {
+   var selectedAnswer = $("form input[name=answer]:checked");
+  // Check if User answered question.
+  // If so, update user's score. If not, do not continue quiz until answer is given.
+  if(selectedAnswer.length < 1){
+    alert('Please select answer');
+    return false;
+  }
+  else{
+  if(selectedAnswer.val() == allQuestions[questionNum].correctAnswer) {
+    userScore++;
+  }else{
+    life--;
+  }
+    
+    //check if life is zero. show game over else continue game
+    if(life < 1){
+    document.getElementsByTagName("form")[0].style.display = "none";
+      
+    document.getElementById("question").textContent = "Game Over.";
+    alert('Game Over');
+  }else{
+    
+    // If last question, show user's score rather than next question
+    if (questionNum == (allQuestions.length - 1)) {
+    document.getElementsByTagName("form")[0].style.display = "none";
+      
+    document.getElementById("question").textContent ="Your score is " +   userScore + " out of " + allQuestions.length + ".";
+    }
+     // Current question is not the last question, so increment the current question index
+    questionNum++;
+  
+  // Replace current question with next question
+    document.getElementById("question").textContent = allQuestions[questionNum].question;
+
+    document.getElementById("choice0").textContent = allQuestions[questionNum].choices[0];
+
+    document.getElementById("choice1").textContent = allQuestions[questionNum].choices[1];
+
+    document.getElementById("choice2").textContent = allQuestions[questionNum].choices[2];
+    
+    document.getElementById("userScore").textContent = userScore;
+    document.getElementById("life").textContent = life;
+    }
+    }
+    });
+    </script>
+        
+    </body>
+</html>
